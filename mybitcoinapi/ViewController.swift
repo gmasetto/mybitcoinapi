@@ -31,9 +31,8 @@ class ViewController: UIViewController {
                         do {
                             if let resultJson = try JSONSerialization.jsonObject(with: bitCointObject, options: []) as? [String: Any] {
                                 if let bitCoinBrl = resultJson["BRL"]  as? [String: Any] {
-                                    print(bitCoinBrl)
                                     if let price = bitCoinBrl["buy"] as? Double {
-                                        print(price)
+                                        self.bitCoinValue.text = price as? String
                                     }
                                 }
                             }
