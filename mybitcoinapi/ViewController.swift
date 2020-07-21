@@ -10,11 +10,44 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var bitCoinValue: UILabel!
+    
+   
+    @IBOutlet weak var buttonUpdatedPriceBitCoin: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
     }
+    
+    @IBAction func actionGetPriceBitCoin(_ sender: Any) {
+        getPriceBitCoin()
+    }
+    
+    private func getPriceBitCoin() {
+        if let url = URL(string: "https://blockchain.info/ticker") {
+            let task = URLSession.shared.dataTask(with: url) { (results, requisicao, error) in
 
-
+                if error == nil {
+                    if let bitCointObject = results {
+                        do {
+                            if let resultJson = try JSONSerialization.jsonObject(with: bitCointObject, options: []) as? [String: Any] {
+                                if let bitCoinBrl = resultJson["BRL"]  as? [String: Any] {
+                                    print(bitCoinBrl)
+                                    if let price = bitCoinBrl["buy"] as? Double {
+                                        print(price)
+                                    }
+                                }
+                            }
+                        } catch {
+                            print("Error")
+                        }
+                    }
+                } else {
+                    print(error)
+                }
+            }
+            task.resume()
+         }
+    }
+    
 }
 
